@@ -1,25 +1,47 @@
+import React from 'react';
 import {View} from "react-native";
-import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import {createAppContainer} from 'react-navigation';
-import Home from "../screens/Home"
-import Search from "../screens/Search"
-import Notifications from "../screens/Notifications"
-import Profile from "../screens/Profile"
+import {createStackNavigator} from "react-navigation-stack";
+import Home from "../screens/tabs/Home"
+import Search from "../screens/tabs/Search"
+import Notifications from "../screens/tabs/Notifications"
+import Profile from "../screens/tabs/Profile"
+import MessagesLink from '../components/MessagesLink';
 
-const TabNavigation = createBottomTabNavigator({
-    Home, 
-    Search,
+const stackFactory = (initialRoute, customConfig) => 
+    createStackNavigator({
+        InitialRoute:{
+            screen: initialRoute,
+            navigationOptions: {...customConfig}   
+        }
+    });
+
+export default createBottomTabNavigator({
+    Home:{
+        screen: stackFactory(Home, {
+        title: "Home",
+        headerRight: <MessagesLink />
+        })
+    }, 
+    Search:{
+        screen: stackFactory(Search, {
+        title: "Search"
+        })
+    },
     Add: {
         screen: View,
         navigationOptions:{
-            tabBarOnPress: () => {
-                console.log("Add");
-            }
+            tabBarOnPress: ({navigation}) => navigation.navigate("PhotoNavigation")
         }
     }, 
-    Notifications, 
-    Profile
+    Notifications: {
+        screen: stackFactory(Notifications, {
+        title: "Notifications"
+        })
+    }, 
+    Profile: {
+        screen: stackFactory(Profile, {
+        title: "Profile"
+        })
+    }
 });
-
-export default createAppContainer(TabNavigation);
