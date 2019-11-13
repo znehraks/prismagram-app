@@ -13,6 +13,7 @@ import apolloClientOptions from './apollo';
 import styles from './styles';
 import NavController from './components/NavController';
 import { AuthProvider } from './AuthContext';
+import Proptypes from 'prop-types';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -32,6 +33,13 @@ export default function App() {
       });
       const client = new ApolloClient({
         cache,
+        request: async(operation) => {
+          const token = await AsyncStorage.getItem("jwt");
+          return operation.setContext({headers: {
+            Authorization: `Bearer ${token}`
+          }
+          });
+        },
         ...apolloClientOptions
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
