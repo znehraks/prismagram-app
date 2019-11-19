@@ -5,9 +5,9 @@ import Login from "../screens/Auth/Login"
 import AuthHome from "../screens/Auth/AuthHome"
 
 const AuthNavigation = createStackNavigator({  
-        SignUp, 
+        AuthHome,
         Login, 
-        AuthHome
+        SignUp 
     },
     {
         headerMode: "none"
